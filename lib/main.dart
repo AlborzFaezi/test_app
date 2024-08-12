@@ -1,0 +1,97 @@
+
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:test_test/object.dart';
+
+void main() {
+
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CatImageScreen(),
+    );
+  }
+}
+
+class CatImageScreen extends StatefulWidget {
+
+  const CatImageScreen({super.key});
+
+
+
+  @override
+  State<CatImageScreen> createState() => _CatImageScreenState();
+}
+
+class _CatImageScreenState extends State<CatImageScreen> {
+
+  Future<Object>? myCode;
+
+
+Future<Object> fetchObject()async{
+  final response = await http.get(Uri.parse('https://api.restful-api.dev/objects/7'));
+  if(response.statusCode == 200){
+    return Object.fromJson(jsonDecode(response.body));
+  } else{
+    throw Exception('failed to load');
+  }
+}
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    myCode = fetchObject();
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Random Cat Image',style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.blue,
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          child: Column(
+            children: [
+              FutureBuilder<Object>(
+                  future: myCode,
+                  builder: (context,snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      Object myObject = snapshot.data!;
+                      return Column(
+                        children: [
+                          Text('Name: ${myObject.name}'),
+                        ],
+                      );
+                    } else {
+                      return Text(
+                          'No data found'); // Handle the case where there's no data
+                    }
+                  }
+              ),
+            ],
+          ),
+        ),
+      )
+    );
+  }
+// check this
+}
