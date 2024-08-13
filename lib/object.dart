@@ -1,7 +1,7 @@
 class Object{
   final String id;
   final String name;
-  final String data;
+  final dynamic data;
 
 
   Object({

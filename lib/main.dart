@@ -1,8 +1,9 @@
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:test_test/detail.dart';
+// import 'package:test_test/detail.dart';
 import 'package:test_test/object.dart';
 
 void main() {
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: CatImageScreen(),
+      routes: {
+        '/detail' :(ctx) =>Detail(),
+      },
     );
   }
 }
@@ -33,6 +37,7 @@ class CatImageScreen extends StatefulWidget {
 }
 
 class _CatImageScreenState extends State<CatImageScreen> {
+
 
   Future<Object>? myCode;
 
@@ -60,12 +65,10 @@ Future<Object> fetchObject()async{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Random Cat Image',style: TextStyle(color: Colors.white),),
+        title: Text('Computer',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.blue,
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          child: Column(
+      body: Column(
             children: [
               FutureBuilder<Object>(
                   future: myCode,
@@ -76,21 +79,29 @@ Future<Object> fetchObject()async{
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       Object myObject = snapshot.data!;
-                      return Column(
-                        children: [
-                          Text('Name: ${myObject.name}'),
-                        ],
+                      return ListTile(
+                        leading: CircleAvatar(child: Text(myObject.id),),
+                        title: Text(myObject.name),
+                        trailing: ElevatedButton(
+                          onPressed: (){
+                            Navigator.of(context).pushNamed('/detail',arguments:{
+                              'data':myObject.data
+                            } );
+                          },
+                          style:ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+                          child: Text('Details',style: TextStyle(color: Colors.yellow),),
+                        ),
                       );
                     } else {
                       return Text(
-                          'No data found'); // Handle the case where there's no data
+                          'No data found'
+                      ); // Handle the case where there's no data
                     }
                   }
               ),
             ],
           ),
-        ),
-      )
+
     );
   }
 // check this
