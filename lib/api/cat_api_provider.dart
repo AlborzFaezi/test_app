@@ -6,6 +6,6 @@ class CatApiProvider {
   CatApiProvider(this.dio);
 
   Future<Response> fetchCats() async {
-    return await dio.get('https://cataas.com/api/cats?limit=10&skip=0');
+     return await dio.get('https://cataas.com/api/cats?limit=10&skip=0');
   }
 }

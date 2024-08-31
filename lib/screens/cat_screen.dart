@@ -45,10 +45,17 @@ class CatList extends StatelessWidget {
             itemBuilder: (context, index) {
               final cat = cats[index];
               return Card(
-                color: Colors.blueGrey,
+                color: Colors.blueAccent,
                 margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 elevation: 4.0,
                 child: ListTile(
+                  onTap: (){
+                    Navigator.pushNamed(
+                      context,
+                      '/catImage',
+                      arguments: cat.id ?? '',
+                    );
+                  },
                   contentPadding: EdgeInsets.all(16.0),
                   leading: Icon(Icons.pets, size: 40.0, color: Colors.white),
                   title: Text(

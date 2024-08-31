@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/cat_image_screen.dart';
 import 'screens/cat_screen.dart';
 
 void main() {
@@ -12,7 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: CatScreen(),
-      debugShowCheckedModeBanner: false,// Use the CatScreen as the home screen
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/catImage': (context) => CatImageScreen(),
+      },
     );
   }
 }
