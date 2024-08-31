@@ -1,13 +1,17 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:test_test/api/cat_api_provider.dart';
 
 
 class CatImageScreen extends StatelessWidget {
+
   const CatImageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final String catId = ModalRoute.of(context)!.settings.arguments as String;
-    final String imageUrl = 'https://cataas.com/cat/$catId';
+    final catId = ModalRoute.of(context)!.settings.arguments as String;
+    final catApiProvider = CatApiProvider(Dio());
+    final String imageUrl = catApiProvider.getImageUrl(catId);
 
     return Scaffold(
       appBar: AppBar(
