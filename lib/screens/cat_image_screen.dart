@@ -18,9 +18,12 @@ class CatImageScreen extends StatelessWidget {
         title: Text('Cat Image',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.cyan,
       ),
-      body: SingleChildScrollView(
-          child: Image.network(imageUrl)
-      ),
+      body:  Image.network(
+              imageUrl,
+              width: double.infinity,
+              height: 300,
+              fit: BoxFit.cover,
+          ),
     );
   }
 }

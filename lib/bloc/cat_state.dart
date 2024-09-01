@@ -9,11 +9,14 @@ class CatLoading extends CatState {}
 class CatLoaded extends CatState {
   final List<CatModel> cats;
 
-  CatLoaded(this.cats);
+  CatLoaded({ required this.cats});
 }
+
+
+
 
 class CatError extends CatState {
   final String message;
 
-  CatError(this.message);
+  CatError({required this.message});
 }

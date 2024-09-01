@@ -1,24 +1,33 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_test/models/cat_model.dart';
 import '../repository/cat_repository.dart';
 import 'cat_state.dart';
 
 class CatCubit extends Cubit<CatState> {
-  final CatRepository catRepository;
+  final CatRepository _catRepository;
+  List<CatModel> _allCats = [];
 
-  CatCubit(this.catRepository) : super(CatInitial());
+
+  CatCubit(this._catRepository) : super(CatInitial());
 
   Future<void> loadCats() async {
-    emit(CatLoading());
     try {
-      final cats = await catRepository.fetchCats();
-      if (cats.isNotEmpty) {
-        emit(CatLoaded(cats));
-      } else {
-        emit(CatError('No cats found.'));
-      }
+      emit(CatLoading());
+      final cats = await _catRepository.fetchCats();
+      _allCats = cats;
+      emit(CatLoaded(cats: _allCats));
     } catch (e) {
-      print('Error: $e');
-      emit(CatError(e.toString()));
+      emit(CatError(message: e.toString()));
     }
   }
+
+
+  void filterCats(String query) {
+    final filteredCats = _allCats.where((cat) {
+      return (cat.id?.contains(query) ?? false) ||
+          (cat.tags?.any((tag) => tag.toLowerCase().contains(query.toLowerCase())) ?? false);
+    }).toList();
+    emit(CatLoaded(cats: filteredCats));
+  }
+
 }
